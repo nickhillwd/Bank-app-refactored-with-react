@@ -19856,11 +19856,14 @@
 	
 	var React = __webpack_require__(4);
 	var sampleAccounts = __webpack_require__(3);
+	
 	var Bank = __webpack_require__(1);
 	var Account = __webpack_require__(2);
+	
 	var AccountBox = __webpack_require__(164);
 	var SelectAccountType = __webpack_require__(165);
 	var SelectOwner = __webpack_require__(166);
+	var AllAccountsBox = __webpack_require__(167);
 	
 	var BankBox = React.createClass({
 	  displayName: 'BankBox',
@@ -19916,12 +19919,7 @@
 	        null,
 	        'React BankBox™'
 	      ),
-	      React.createElement(
-	        'h2',
-	        null,
-	        'Total: £',
-	        bank.totalCash()
-	      ),
+	      React.createElement(AllAccountsBox, { bank: bank }),
 	      React.createElement(SelectAccountType, { bank: bank, setCurrentType: this.setCurrentAccountType }),
 	      React.createElement(SelectOwner, { bank: bank, currentAccountType: this.state.currentAccountType, setCurrentOwner: this.setCurrentAccountOwner }),
 	      React.createElement(AccountBox, { bank: bank, currentAccountOwner: this.state.currentAccountOwner })
@@ -20120,6 +20118,142 @@
 	});
 	
 	module.exports = SelectOwner;
+
+/***/ },
+/* 167 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(4);
+	
+	var AllAccountsBox = React.createClass({
+	  displayName: 'AllAccountsBox',
+	
+	
+	  getTableRows: function getTableRows() {
+	    var rows = this.props.bank.accounts.map(function (account, index) {
+	      return React.createElement(
+	        'tr',
+	        { key: index },
+	        React.createElement(
+	          'td',
+	          null,
+	          account.owner
+	        ),
+	        React.createElement(
+	          'td',
+	          null,
+	          account.type
+	        ),
+	        React.createElement(
+	          'td',
+	          null,
+	          account.amount
+	        )
+	      );
+	    });
+	    return rows;
+	  },
+	
+	  render: function render() {
+	
+	    var bank = this.props.bank;
+	    var tableRows = this.getTableRows();
+	
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h4',
+	        null,
+	        'All Accounts:'
+	      ),
+	      React.createElement(
+	        'table',
+	        null,
+	        React.createElement(
+	          'thead',
+	          null,
+	          React.createElement(
+	            'tr',
+	            null,
+	            React.createElement(
+	              'th',
+	              null,
+	              'Name'
+	            ),
+	            React.createElement(
+	              'th',
+	              null,
+	              'Type'
+	            ),
+	            React.createElement(
+	              'th',
+	              null,
+	              'Balance'
+	            )
+	          )
+	        ),
+	        React.createElement(
+	          'tbody',
+	          null,
+	          tableRows
+	        ),
+	        React.createElement(
+	          'tfoot',
+	          null,
+	          React.createElement(
+	            'tr',
+	            null,
+	            React.createElement(
+	              'th',
+	              null,
+	              'Bank Total:'
+	            ),
+	            React.createElement(
+	              'th',
+	              null,
+	              'Average Balance:'
+	            )
+	          ),
+	          React.createElement(
+	            'tr',
+	            null,
+	            React.createElement(
+	              'td',
+	              null,
+	              bank.totalCash()
+	            ),
+	            React.createElement(
+	              'td',
+	              null,
+	              bank.accountAverage()
+	            )
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'h4',
+	        null,
+	        'All Account Functions:'
+	      ),
+	      React.createElement(
+	        'button',
+	        null,
+	        'Pay Fees'
+	      ),
+	      React.createElement(
+	        'button',
+	        null,
+	        'Interest'
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = AllAccountsBox;
 
 /***/ }
 /******/ ]);
