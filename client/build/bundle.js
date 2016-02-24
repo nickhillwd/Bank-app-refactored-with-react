@@ -196,11 +196,69 @@
 	      }
 	    }
 	
+	    total = Math.round(total * 100) / 100;
 	    return total;
 	  },
 	
 	  accountAverage: function accountAverage() {
-	    return this.totalCash() / this.accounts.length;
+	    var avg = this.totalCash() / this.accounts.length;
+	    return Math.round(avg * 100) / 100;
+	  },
+	
+	  payFees: function payFees() {
+	    var _iteratorNormalCompletion4 = true;
+	    var _didIteratorError4 = false;
+	    var _iteratorError4 = undefined;
+	
+	    try {
+	      for (var _iterator4 = this.accounts[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+	        var account = _step4.value;
+	
+	        account.type === "business" ? account.amount -= 50 : account.amount -= 5;
+	        account.amount = Math.round(account.amount * 100) / 100;
+	      }
+	    } catch (err) {
+	      _didIteratorError4 = true;
+	      _iteratorError4 = err;
+	    } finally {
+	      try {
+	        if (!_iteratorNormalCompletion4 && _iterator4.return) {
+	          _iterator4.return();
+	        }
+	      } finally {
+	        if (_didIteratorError4) {
+	          throw _iteratorError4;
+	        }
+	      }
+	    }
+	  },
+	
+	  interest: function interest() {
+	    var _iteratorNormalCompletion5 = true;
+	    var _didIteratorError5 = false;
+	    var _iteratorError5 = undefined;
+	
+	    try {
+	      for (var _iterator5 = this.accounts[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+	        var account = _step5.value;
+	
+	        account.amount += account.amount * 0.01;
+	        account.amount = Math.round(account.amount * 100) / 100;
+	      }
+	    } catch (err) {
+	      _didIteratorError5 = true;
+	      _iteratorError5 = err;
+	    } finally {
+	      try {
+	        if (!_iteratorNormalCompletion5 && _iterator5.return) {
+	          _iterator5.return();
+	        }
+	      } finally {
+	        if (_didIteratorError5) {
+	          throw _iteratorError5;
+	        }
+	      }
+	    }
 	  }
 	};
 	
@@ -19881,6 +19939,10 @@
 	    this.setState({ currentAccountOwner: owner });
 	  },
 	
+	  updateAccounts: function updateAccounts(newAccounts) {
+	    this.setState({ accounts: newAccounts });
+	  },
+	
 	  render: function render() {
 	
 	    var bank = new Bank();
@@ -19919,7 +19981,7 @@
 	        null,
 	        'React BankBox™'
 	      ),
-	      React.createElement(AllAccountsBox, { bank: bank }),
+	      React.createElement(AllAccountsBox, { bank: bank, updateAccounts: this.updateAccounts }),
 	      React.createElement(SelectAccountType, { bank: bank, setCurrentType: this.setCurrentAccountType }),
 	      React.createElement(SelectOwner, { bank: bank, currentAccountType: this.state.currentAccountType, setCurrentOwner: this.setCurrentAccountOwner }),
 	      React.createElement(AccountBox, { bank: bank, currentAccountOwner: this.state.currentAccountOwner })
@@ -20149,11 +20211,26 @@
 	        React.createElement(
 	          'td',
 	          null,
+	          '£',
 	          account.amount
 	        )
 	      );
 	    });
 	    return rows;
+	  },
+	
+	  handleFeesClick: function handleFeesClick(event) {
+	    event.preventDefault();
+	    var bank = this.props.bank;
+	    bank.payFees();
+	    this.props.updateAccounts(bank.accounts);
+	  },
+	
+	  handleInterestClick: function handleInterestClick(event) {
+	    event.preventDefault();
+	    var bank = this.props.bank;
+	    bank.interest();
+	    this.props.updateAccounts(bank.accounts);
 	  },
 	
 	  render: function render() {
@@ -20223,11 +20300,13 @@
 	            React.createElement(
 	              'td',
 	              null,
+	              '£',
 	              bank.totalCash()
 	            ),
 	            React.createElement(
 	              'td',
 	              null,
+	              '£',
 	              bank.accountAverage()
 	            )
 	          )
@@ -20240,12 +20319,12 @@
 	      ),
 	      React.createElement(
 	        'button',
-	        null,
+	        { onClick: this.handleFeesClick },
 	        'Pay Fees'
 	      ),
 	      React.createElement(
 	        'button',
-	        null,
+	        { onClick: this.handleInterestClick },
 	        'Interest'
 	      )
 	    );

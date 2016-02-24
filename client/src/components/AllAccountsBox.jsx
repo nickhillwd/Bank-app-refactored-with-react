@@ -8,11 +8,25 @@ var AllAccountsBox = React.createClass({
         <tr key={index}>
           <td>{account.owner}</td>
           <td>{account.type}</td>
-          <td>{account.amount}</td>
+          <td>£{account.amount}</td>
         </tr>
       )
     });
     return(rows);
+  },
+
+  handleFeesClick: function(event){
+    event.preventDefault();
+    var bank = this.props.bank;
+    bank.payFees();
+    this.props.updateAccounts(bank.accounts);
+  },
+
+  handleInterestClick: function(event){
+    event.preventDefault();
+    var bank = this.props.bank;
+    bank.interest();
+    this.props.updateAccounts(bank.accounts);
   },
 
   render: function(){
@@ -41,15 +55,15 @@ var AllAccountsBox = React.createClass({
               <th>Average Balance:</th>
             </tr>
             <tr>
-              <td>{bank.totalCash()}</td>
-              <td>{bank.accountAverage()}</td>
+              <td>£{bank.totalCash()}</td>
+              <td>£{bank.accountAverage()}</td>
             </tr>
           </tfoot>
         </table>
 
         <h4>All Account Functions:</h4>
-        <button>Pay Fees</button>
-        <button>Interest</button>
+        <button onClick={this.handleFeesClick}>Pay Fees</button>
+        <button onClick={this.handleInterestClick}>Interest</button>
 
       </div>
     );
