@@ -36,5 +36,4 @@ Bank.prototype = {
   }
 }
 
-
 module.exports = Bank;

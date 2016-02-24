@@ -19853,13 +19853,25 @@
 	var React = __webpack_require__(4);
 	var sampleAccounts = __webpack_require__(3);
 	var Bank = __webpack_require__(1);
+	var Account = __webpack_require__(2);
+	var AccountBox = __webpack_require__(164);
+	var SelectAccountType = __webpack_require__(165);
+	var SelectOwner = __webpack_require__(166);
 	
 	var BankBox = React.createClass({
 	  displayName: 'BankBox',
 	
 	
 	  getInitialState: function getInitialState() {
-	    return { accounts: sampleAccounts };
+	    return { accounts: sampleAccounts, currentAccountType: "personal", currentOwner: null };
+	  },
+	
+	  setCurrentAccountType: function setCurrentAccountType(type) {
+	    this.setState({ currentAccountType: type });
+	  },
+	
+	  setCurrentAccountOwner: function setCurrentAccountOwner(owner) {
+	    this.setState({ currentOwner: owner });
 	  },
 	
 	  render: function render() {
@@ -19874,7 +19886,8 @@
 	      for (var _iterator = this.state.accounts[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	        var account = _step.value;
 	
-	        bank.addAccount(account);
+	        var AccountObj = new Account(account);
+	        bank.addAccount(AccountObj);
 	      }
 	    } catch (err) {
 	      _didIteratorError = true;
@@ -19897,20 +19910,187 @@
 	      React.createElement(
 	        'h1',
 	        null,
-	        'React BankBox'
+	        'React BankBox™'
 	      ),
 	      React.createElement(
 	        'h2',
 	        null,
 	        'Total: £',
 	        bank.totalCash()
-	      )
+	      ),
+	      React.createElement(SelectAccountType, { bank: bank, setCurrentType: this.setCurrentAccountType }),
+	      React.createElement(SelectOwner, { bank: bank, currentAccountType: this.state.currentAccountType, setCurrentOwner: this.setCurrentAccountOwner }),
+	      React.createElement(AccountBox, { AccountType: this.state.currentAccountType })
 	    );
 	  }
 	
 	});
 	
 	module.exports = BankBox;
+
+/***/ },
+/* 163 */,
+/* 164 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(4);
+	
+	var AccountBox = React.createClass({
+	  displayName: 'AccountBox',
+	
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h2',
+	        null,
+	        'AccountBox'
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = AccountBox;
+
+/***/ },
+/* 165 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(4);
+	
+	var SelectAccountType = React.createClass({
+	  displayName: 'SelectAccountType',
+	
+	
+	  getSelectOptions: function getSelectOptions() {
+	    var accountTypes = [];
+	    var _iteratorNormalCompletion = true;
+	    var _didIteratorError = false;
+	    var _iteratorError = undefined;
+	
+	    try {
+	      for (var _iterator = this.props.bank.accounts[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	        var account = _step.value;
+	
+	        if (!accountTypes.includes(account.type)) {
+	          accountTypes.push(account.type);
+	        }
+	      }
+	    } catch (err) {
+	      _didIteratorError = true;
+	      _iteratorError = err;
+	    } finally {
+	      try {
+	        if (!_iteratorNormalCompletion && _iterator.return) {
+	          _iterator.return();
+	        }
+	      } finally {
+	        if (_didIteratorError) {
+	          throw _iteratorError;
+	        }
+	      }
+	    }
+	
+	    var SelectOptions = accountTypes.map(function (type, index) {
+	      return React.createElement(
+	        'option',
+	        { value: type, key: index },
+	        type
+	      );
+	    });
+	    return SelectOptions;
+	  },
+	
+	  handleChange: function handleChange(event) {
+	    event.preventDefault();
+	    var type = event.target.value;
+	    this.props.setCurrentType(type);
+	  },
+	
+	  render: function render() {
+	
+	    var SelectOptions = this.getSelectOptions();
+	
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h4',
+	        null,
+	        'SelectAccountType:'
+	      ),
+	      React.createElement(
+	        'select',
+	        { onChange: this.handleChange },
+	        SelectOptions
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = SelectAccountType;
+
+/***/ },
+/* 166 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(4);
+	
+	var SelectOwner = React.createClass({
+	  displayName: 'SelectOwner',
+	
+	
+	  getSelectOptions: function getSelectOptions() {
+	
+	    var bank = this.props.bank;
+	    var type = this.props.currentAccountType;
+	    var selectOptions = bank.filteredAccounts(type).map(function (account, index) {
+	      return React.createElement(
+	        'option',
+	        { value: account.owner, key: index },
+	        account.owner
+	      );
+	    });
+	    return selectOptions;
+	  },
+	
+	  handleChange: function handleChange(event) {
+	    event.preventDefault();
+	    var ownerName = event.target.value;
+	    this.props.setCurrentOwner(ownerName);
+	  },
+	
+	  render: function render() {
+	
+	    var selectOptions = this.getSelectOptions();
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h4',
+	        null,
+	        'Select Account Owner:'
+	      ),
+	      React.createElement(
+	        'select',
+	        { onChange: this.handleChange },
+	        selectOptions
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = SelectOwner;
 
 /***/ }
 /******/ ]);
