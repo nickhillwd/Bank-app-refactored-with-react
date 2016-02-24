@@ -6,6 +6,7 @@ Bank.prototype = {
   addAccount: function(account){
     this.accounts.push(account);
   },
+
   findAccountByOwnerName:function(ownerName){
     var foundAccount = null;
     for (var account of this.accounts) {
@@ -15,6 +16,7 @@ Bank.prototype = {
     }
     return foundAccount;
   },
+
   filteredAccounts: function(type){
     if(!type) return this.accounts
     var filteredAccounts = [];
@@ -24,6 +26,7 @@ Bank.prototype = {
     }
     return filteredAccounts;
   },
+
   totalCash:function(type){
     var total = 0;
     for (var account of this.filteredAccounts(type)) {
@@ -31,6 +34,7 @@ Bank.prototype = {
     }
     return total;
   },
+
   accountAverage:function(){
     return this.totalCash()/this.accounts.length;
   }

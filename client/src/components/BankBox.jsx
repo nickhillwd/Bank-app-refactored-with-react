@@ -9,7 +9,7 @@ var SelectOwner = require('./SelectOwner');
 var BankBox = React.createClass({
   
   getInitialState: function(){
-    return {accounts: sampleAccounts, currentAccountType: "personal", currentOwner: null}
+    return {accounts: sampleAccounts, currentAccountType: "personal", currentAccountOwner: null}
   },
 
   setCurrentAccountType: function(type){
@@ -17,7 +17,7 @@ var BankBox = React.createClass({
   },
 
   setCurrentAccountOwner: function(owner){
-    this.setState({currentOwner: owner})
+    this.setState({currentAccountOwner: owner})
   },
 
   render: function(){
@@ -35,7 +35,7 @@ var BankBox = React.createClass({
         <h2>Total: £{bank.totalCash()}</h2>
         <SelectAccountType bank={bank} setCurrentType={this.setCurrentAccountType}></SelectAccountType>
         <SelectOwner bank={bank} currentAccountType={this.state.currentAccountType} setCurrentOwner={this.setCurrentAccountOwner}></SelectOwner>
-        <AccountBox AccountType={this.state.currentAccountType}></AccountBox>
+        <AccountBox bank={bank} currentAccountOwner={this.state.currentAccountOwner}></AccountBox>
       </div>
     )
   }

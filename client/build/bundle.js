@@ -105,6 +105,7 @@
 	  addAccount: function addAccount(account) {
 	    this.accounts.push(account);
 	  },
+	
 	  findAccountByOwnerName: function findAccountByOwnerName(ownerName) {
 	    var foundAccount = null;
 	    var _iteratorNormalCompletion = true;
@@ -136,6 +137,7 @@
 	
 	    return foundAccount;
 	  },
+	
 	  filteredAccounts: function filteredAccounts(type) {
 	    if (!type) return this.accounts;
 	    var filteredAccounts = [];
@@ -166,6 +168,7 @@
 	
 	    return filteredAccounts;
 	  },
+	
 	  totalCash: function totalCash(type) {
 	    var total = 0;
 	    var _iteratorNormalCompletion3 = true;
@@ -195,6 +198,7 @@
 	
 	    return total;
 	  },
+	
 	  accountAverage: function accountAverage() {
 	    return this.totalCash() / this.accounts.length;
 	  }
@@ -19863,7 +19867,7 @@
 	
 	
 	  getInitialState: function getInitialState() {
-	    return { accounts: sampleAccounts, currentAccountType: "personal", currentOwner: null };
+	    return { accounts: sampleAccounts, currentAccountType: "personal", currentAccountOwner: null };
 	  },
 	
 	  setCurrentAccountType: function setCurrentAccountType(type) {
@@ -19871,7 +19875,7 @@
 	  },
 	
 	  setCurrentAccountOwner: function setCurrentAccountOwner(owner) {
-	    this.setState({ currentOwner: owner });
+	    this.setState({ currentAccountOwner: owner });
 	  },
 	
 	  render: function render() {
@@ -19920,7 +19924,7 @@
 	      ),
 	      React.createElement(SelectAccountType, { bank: bank, setCurrentType: this.setCurrentAccountType }),
 	      React.createElement(SelectOwner, { bank: bank, currentAccountType: this.state.currentAccountType, setCurrentOwner: this.setCurrentAccountOwner }),
-	      React.createElement(AccountBox, { AccountType: this.state.currentAccountType })
+	      React.createElement(AccountBox, { bank: bank, currentAccountOwner: this.state.currentAccountOwner })
 	    );
 	  }
 	
@@ -19942,13 +19946,38 @@
 	
 	
 	  render: function render() {
+	
+	    var bank = this.props.bank;
+	    var owner = this.props.currentAccountOwner;
+	
+	    var account = bank.findAccountByOwnerName(owner);
+	
+	    if (!account) {
+	      return React.createElement(
+	        'h4',
+	        null,
+	        'Please Select Account'
+	      );
+	    }
+	
 	    return React.createElement(
 	      'div',
 	      null,
 	      React.createElement(
-	        'h2',
+	        'ul',
 	        null,
-	        'AccountBox'
+	        React.createElement(
+	          'li',
+	          null,
+	          'Account Owner: ',
+	          account.owner
+	        ),
+	        React.createElement(
+	          'li',
+	          null,
+	          'Balance: £',
+	          account.amount
+	        )
 	      )
 	    );
 	  }
