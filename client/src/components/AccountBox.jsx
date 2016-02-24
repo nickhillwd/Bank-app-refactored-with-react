@@ -2,6 +2,14 @@ var React = require('react');
 
 var AccountBox = React.createClass({
 
+  handleDelete: function(event){
+    event.preventDefault();
+    var bank = this.props.bank;
+    var ownerName = this.props.currentAccountOwner;
+    bank.deleteAccount(ownerName);
+    this.props.updateAccounts(bank.accounts);
+  },
+
   render: function(){
 
   var bank = this.props.bank;
@@ -19,6 +27,7 @@ var AccountBox = React.createClass({
           <li>Account Owner: {account.owner}</li>
           <li>Balance: £{account.amount}</li>
         </ul>
+        <button onClick={this.handleDelete}>Delete This Account</button>
       </div>
     )
   }

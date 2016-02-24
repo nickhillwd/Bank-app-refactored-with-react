@@ -53,15 +53,13 @@ Bank.prototype = {
       account.amount += (account.amount * 0.01);
       account.amount = Math.round(account.amount * 100) /100;
     }
-  }
+  },
+
+  deleteAccount: function(ownerName){
+    this.accounts = this.accounts.filter(function(account){
+      return (account.owner !== ownerName);
+    });
+  },
 }
 
 module.exports = Bank;
-
-
-
-
-
-
-
-

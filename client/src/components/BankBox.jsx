@@ -42,7 +42,7 @@ var BankBox = React.createClass({
         <AllAccountsBox bank={bank} updateAccounts={this.updateAccounts}></AllAccountsBox>
         <SelectAccountType bank={bank} setCurrentType={this.setCurrentAccountType}></SelectAccountType>
         <SelectOwner bank={bank} currentAccountType={this.state.currentAccountType} setCurrentOwner={this.setCurrentAccountOwner}></SelectOwner>
-        <AccountBox bank={bank} currentAccountOwner={this.state.currentAccountOwner}></AccountBox>
+        <AccountBox bank={bank} currentAccountOwner={this.state.currentAccountOwner} updateAccounts={this.updateAccounts}></AccountBox>
       </div>
     )
   }

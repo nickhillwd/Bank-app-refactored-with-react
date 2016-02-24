@@ -259,6 +259,12 @@
 	        }
 	      }
 	    }
+	  },
+	
+	  deleteAccount: function deleteAccount(ownerName) {
+	    this.accounts = this.accounts.filter(function (account) {
+	      return account.owner !== ownerName;
+	    });
 	  }
 	};
 	
@@ -19984,7 +19990,7 @@
 	      React.createElement(AllAccountsBox, { bank: bank, updateAccounts: this.updateAccounts }),
 	      React.createElement(SelectAccountType, { bank: bank, setCurrentType: this.setCurrentAccountType }),
 	      React.createElement(SelectOwner, { bank: bank, currentAccountType: this.state.currentAccountType, setCurrentOwner: this.setCurrentAccountOwner }),
-	      React.createElement(AccountBox, { bank: bank, currentAccountOwner: this.state.currentAccountOwner })
+	      React.createElement(AccountBox, { bank: bank, currentAccountOwner: this.state.currentAccountOwner, updateAccounts: this.updateAccounts })
 	    );
 	  }
 	
@@ -20004,6 +20010,14 @@
 	var AccountBox = React.createClass({
 	  displayName: 'AccountBox',
 	
+	
+	  handleDelete: function handleDelete(event) {
+	    event.preventDefault();
+	    var bank = this.props.bank;
+	    var ownerName = this.props.currentAccountOwner;
+	    bank.deleteAccount(ownerName);
+	    this.props.updateAccounts(bank.accounts);
+	  },
 	
 	  render: function render() {
 	
@@ -20038,6 +20052,11 @@
 	          'Balance: £',
 	          account.amount
 	        )
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this.handleDelete },
+	        'Delete This Account'
 	      )
 	    );
 	  }
